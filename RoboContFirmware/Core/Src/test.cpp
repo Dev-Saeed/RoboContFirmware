@@ -1,0 +1,52 @@
+#include <RoboContFirmware/LowLevel/motor.hpp>
+#include <RoboContFirmware/LowLevel/encoder.hpp>
+#include <RoboContFirmware/MidLevel/motor_controller.hpp>
+#include "test.hpp"
+
+// External handles from CubeMX
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim5;
+
+// Global MotorController
+MotorController motorController(10000.0f); // Example freq: 10kHz
+
+// Interrupt callback (should be called by HAL)
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM2)
+    {
+        uint32_t capture = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+        motorController.handleCapture(htim, capture);
+    }
+}
+
+// Test function: Motor with encoder closed-loop control
+void test_motor_with_encoder()
+{
+    // Parameters (adjust as needed)
+    const float WHEEL_DIAMETER = 0.1f;
+    const float MAX_SPEED_MPS = 1.0f;
+    const float MAX_PWM = 1000.0f;
+    const uint32_t ENCODER_PPR = 3000;
+
+    // Create motor & encoder
+    Motor motor(&htim5, TIM_CHANNEL_1, &htim5, TIM_CHANNEL_2, WHEEL_DIAMETER, MAX_SPEED_MPS, MAX_PWM);
+    motor.setPID(2.0f, 0.5f, 0.1f); // Tune these values
+    motor.setTargetSpeed(0.5f);
+    Encoder encoder(&htim2, TIM_CHANNEL_1, GPIOC, GPIO_PIN_5, WHEEL_DIAMETER, ENCODER_PPR);
+
+    // Add to controller
+    motorController.addMotor(&motor, &encoder);
+
+    uint32_t last_tick = HAL_GetTick();
+    while (1)
+    {
+        uint32_t current_tick = HAL_GetTick();
+        float dt = (current_tick - last_tick) / 1000.0f;
+        if (dt >= 0.01f)
+        {
+            motorController.updateAll(dt);
+            last_tick = current_tick;
+        }
+    }
+}

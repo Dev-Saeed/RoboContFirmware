@@ -1,0 +1,4 @@
+../Core/Src/RoboContFirmware/MidLevel/motor_controller.cpp:3:1:MotorController::MotorController(float)	1
+../Core/Src/RoboContFirmware/MidLevel/motor_controller.cpp:8:6:void MotorController::addMotor(Motor*, Encoder*)	2
+../Core/Src/RoboContFirmware/MidLevel/motor_controller.cpp:16:6:void MotorController::handleCapture(TIM_HandleTypeDef*, uint32_t)	3
+../Core/Src/RoboContFirmware/MidLevel/motor_controller.cpp:24:6:void MotorController::updateAll(float)	2
