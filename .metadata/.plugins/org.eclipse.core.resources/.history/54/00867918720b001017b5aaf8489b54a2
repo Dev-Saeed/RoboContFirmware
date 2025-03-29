@@ -1,0 +1,58 @@
+#include "imu_icm20948.hpp"
+
+#define REG_WHO_AM_I        0x00
+#define WHO_AM_I_EXPECTED   0xEA
+#define REG_ACCEL_XOUT_H    0x2D
+#define REG_GYRO_XOUT_H     0x33
+
+ICM20948::ICM20948(I2C_HandleTypeDef* i2cHandle, uint8_t deviceAddress) {
+    hi2c = i2cHandle;
+    address = deviceAddress;
+}
+
+bool ICM20948::initialize() {
+    uint8_t whoami = readRegister(REG_WHO_AM_I);
+    return (whoami == WHO_AM_I_EXPECTED);
+}
+
+bool ICM20948::readAccelGyro(float& ax, float& ay, float& az, float& gx, float& gy, float& gz) {
+    uint8_t raw[12];
+    if (!readRegisters(REG_ACCEL_XOUT_H, raw, 12)) return false;
+
+    int16_t ax_raw = (raw[0] << 8) | raw[1];
+    int16_t ay_raw = (raw[2] << 8) | raw[3];
+    int16_t az_raw = (raw[4] << 8) | raw[5];
+    int16_t gx_raw = (raw[6] << 8) | raw[7];
+    int16_t gy_raw = (raw[8] << 8) | raw[9];
+    int16_t gz_raw = (raw[10] << 8) | raw[11];
+
+    ax = ax_raw / 2048.0f;  // Assuming ±16g full scale (example scale factor)
+    ay = ay_raw / 2048.0f;
+    az = az_raw / 2048.0f;
+
+    gx = gx_raw / 16.4f;    // Assuming ±2000 dps full scale
+    gy = gy_raw / 16.4f;
+    gz = gz_raw / 16.4f;
+
+    return true;
+}
+
+bool ICM20948::readMag(float& mx, float& my, float& mz) {
+    // Magnetometer handling would involve AK09916 through secondary I2C interface
+    // Not implemented here
+    return false;
+}
+
+bool ICM20948::writeRegister(uint8_t reg, uint8_t data) {
+    return (HAL_I2C_Mem_Write(hi2c, address, reg, I2C_MEMADD_SIZE_8BIT, &data, 1, HAL_MAX_DELAY) == HAL_OK);
+}
+
+bool ICM20948::readRegisters(uint8_t reg, uint8_t* buffer, uint16_t length) {
+    return (HAL_I2C_Mem_Read(hi2c, address, reg, I2C_MEMADD_SIZE_8BIT, buffer, length, HAL_MAX_DELAY) == HAL_OK);
+}
+
+uint8_t ICM20948::readRegister(uint8_t reg) {
+    uint8_t value = 0;
+    HAL_I2C_Mem_Read(hi2c, address, reg, I2C_MEMADD_SIZE_8BIT, &value, 1, HAL_MAX_DELAY);
+    return value;
+}

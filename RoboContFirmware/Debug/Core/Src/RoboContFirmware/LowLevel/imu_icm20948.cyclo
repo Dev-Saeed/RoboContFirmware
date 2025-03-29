@@ -1,0 +1,7 @@
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:8:1:ICM20948::ICM20948(I2C_HandleTypeDef*, uint8_t)	1
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:13:6:bool ICM20948::initialize()	1
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:18:6:bool ICM20948::readAccelGyro(float&, float&, float&, float&, float&, float&)	2
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:40:6:bool ICM20948::readMag(float&, float&, float&)	1
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:46:6:bool ICM20948::writeRegister(uint8_t, uint8_t)	1
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:50:6:bool ICM20948::readRegisters(uint8_t, uint8_t*, uint16_t)	1
+../Core/Src/RoboContFirmware/LowLevel/imu_icm20948.cpp:54:9:uint8_t ICM20948::readRegister(uint8_t)	1

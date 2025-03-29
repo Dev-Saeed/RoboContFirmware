@@ -1,0 +1,29 @@
+#include "swo.hpp"
+#include <cstring>
+
+#define SWO_BUFFER_SIZE 256
+
+void SWO::print(const char* msg) {
+    transmit(msg);
+}
+
+void SWO::println(const char* msg) {
+    char buffer[SWO_BUFFER_SIZE];
+    snprintf(buffer, sizeof(buffer), "%s\r\n", msg);
+    transmit(buffer);
+}
+
+void SWO::printf(const char* format, ...) {
+    char buffer[SWO_BUFFER_SIZE];
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    transmit(buffer);
+}
+
+void SWO::transmit(const char* data) {
+    while (*data) {
+        ITM_SendChar(*data++);
+    }
+}

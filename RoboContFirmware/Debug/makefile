@@ -14,6 +14,7 @@ RM := rm -rf
 -include Core/Src/RoboContFirmware/MidLevel/subdir.mk
 -include Core/Src/RoboContFirmware/LowLevel/subdir.mk
 -include Core/Src/RoboContFirmware/HighLevel/subdir.mk
+-include Core/Src/RoboContFirmware/Debug/subdir.mk
 -include Core/Src/RoboContFirmware/Application/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk

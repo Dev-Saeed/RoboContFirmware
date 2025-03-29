@@ -22,10 +22,13 @@
 #include "adc.h"
 #include "can.h"
 #include "dac.h"
+#include "i2c.h"
+#include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "usb.h"
 #include "gpio.h"
-#include "test.hpp"
+#include <RoboContFirmware/Debug/test.hpp>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -102,16 +105,25 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM13_Init();
   MX_USB_PCD_Init();
+  MX_TIM15_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_SPI1_Init();
+  MX_USART1_UART_Init();
+  MX_TIM17_Init();
+  MX_TIM19_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
   // Create motor object for TIM5 CH1 and CH2
-//  Motor testMotor(&htim5, TIM_CHANNEL_1, &htim5, TIM_CHANNEL_2, 0.1f, 1.5f, 1000.0f);
-//
-//  float target_speed = 0.0f;
-//  float step = 0.05f; // Speed increment step
-//  bool increasing = true;
+  Motor testMotor(&htim5, TIM_CHANNEL_1, &htim5, TIM_CHANNEL_2, 0.1f, 1.5f, 1000.0f);
 
-  test_motor_with_encoder();
+  float target_speed = 0.0f;
+  float step = 0.05f; // Speed increment step
+  bool increasing = true;
+
+  test();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -168,10 +180,11 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
@@ -193,7 +206,15 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_ADC1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_USART1
+                              |RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_USART3
+                              |RCC_PERIPHCLK_I2C1|RCC_PERIPHCLK_I2C2
+                              |RCC_PERIPHCLK_ADC1;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
+  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
+  PeriphClkInit.I2c2ClockSelection = RCC_I2C2CLKSOURCE_HSI;
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL;
   PeriphClkInit.Adc1ClockSelection = RCC_ADC1PCLK2_DIV2;
 

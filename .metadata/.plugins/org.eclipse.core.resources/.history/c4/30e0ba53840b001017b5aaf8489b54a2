@@ -1,0 +1,19 @@
+//// swo.hpp
+//#ifndef SWO_HPP
+//#define SWO_HPP
+//
+//#include <cstdint>
+//
+//class SWODebug {
+//public:
+//    static void init(uint32_t cpuCoreFreqHz, uint8_t port = 0);
+//    static void printChar(char c);
+//    static void print(const char* str);
+//    static void println(const char* str);
+//    static void printf(const char* format, ...);
+//
+//private:
+//    static uint8_t portNum;
+//};
+//
+//#endif // SWO_HPP

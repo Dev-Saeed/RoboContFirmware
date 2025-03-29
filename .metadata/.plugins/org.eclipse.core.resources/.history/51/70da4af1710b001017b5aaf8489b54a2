@@ -1,0 +1,26 @@
+#ifndef SWO_HPP
+#define SWO_HPP
+
+#include <cstdint>
+#include <cstdarg>
+#include <cstdio>
+
+extern "C" {
+#include "core_cm4.h"  // Needed for ITM_SendChar
+}
+
+/**
+ * @brief Utility class for printing debug messages over SWO (Serial Wire Output).
+ * Requires ITM to be enabled and configured in CubeIDE SWV settings.
+ */
+class SWO {
+public:
+    static void print(const char* msg);
+    static void println(const char* msg);
+    static void printf(const char* format, ...);
+
+private:
+    static void transmit(const char* data);
+};
+
+#endif // SWO_HPP

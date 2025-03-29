@@ -1,0 +1,59 @@
+//// swo.cpp
+//#include <RoboContFirmware/Debug/swo.hpp>
+//#include <cstdarg>
+//#include <cstdio>
+//#include <cstring>
+//
+//extern "C" {
+//#include <RoboContFirmware/Debug/TraceRegisters.h>
+//}
+//
+//uint8_t SWODebug::portNum = 0;
+//
+//void SWODebug::init(uint32_t cpuCoreFreqHz, uint8_t port) {
+//    portNum = port;
+//    uint32_t SWOSpeed = 64000;
+//    uint32_t SWOPrescaler = (cpuCoreFreqHz / SWOSpeed) - 1;
+//
+//    CoreDebug->DEMCR = CoreDebug_DEMCR_TRCENA_Msk;
+//    *((volatile unsigned *)(ITM_BASE + 0x400F0)) = 0x00000002;
+//    *((volatile unsigned *)(ITM_BASE + 0x40010)) = SWOPrescaler;
+//    *((volatile unsigned *)(ITM_BASE + 0x00FB0)) = 0xC5ACCE55;
+//    ITM->TCR = ITM_TCR_TraceBusID_Msk | ITM_TCR_SWOENA_Msk |
+//              ITM_TCR_SYNCENA_Msk | ITM_TCR_ITMENA_Msk;
+//    ITM->TPR = ITM_TPR_PRIVMASK_Msk;
+//    ITM->TER = 1 << port;
+//    *((volatile unsigned *)(ITM_BASE + 0x01000)) = 0x400003FE;
+//    *((volatile unsigned *)(ITM_BASE + 0x40304)) = 0x00000100;
+//}
+//
+//void SWODebug::printChar(char c) {
+//    if ((ITM->TCR & ITM_TCR_ITMENA_Msk) == 0) return;
+//    if ((ITM->TER & (1UL << portNum)) == 0) return;
+//
+//    volatile int timeout = 5000;
+//    while (ITM->PORT[portNum].u32 == 0) {
+//        if (--timeout == 0) return;
+//    }
+//    ITM_STIM_U8 = c;
+//}
+//
+//void SWODebug::print(const char* str) {
+//    while (*str != '\0') {
+//        printChar(*str++);
+//    }
+//}
+//
+//void SWODebug::println(const char* str) {
+//    print(str);
+//    print("\r\n");
+//}
+//
+//void SWODebug::printf(const char* format, ...) {
+//    char buffer[256];
+//    va_list args;
+//    va_start(args, format);
+//    vsnprintf(buffer, sizeof(buffer), format, args);
+//    va_end(args);
+//    print(buffer);
+//}

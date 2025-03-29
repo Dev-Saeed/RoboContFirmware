@@ -1,4 +1,0 @@
-../Core/Src/test.cpp:14:6:void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef*)	2
-../Core/Src/test.cpp:24:6:void test_motor_with_encoder()	2
-../Core/Src/test.cpp:55:1:void __static_initialization_and_destruction_0(int, int)	3
-../Core/Src/test.cpp:55:1:cpp)	1

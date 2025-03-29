@@ -1,0 +1,10 @@
+06:54:21 **** Incremental Build of configuration Debug for project RoboContFirmware ****
+make -j12 all 
+arm-none-eabi-size  RoboContFirmware.elf 
+   text	   data	    bss	    dec	    hex	filename
+  27676	     12	   3628	  31316	   7a54	RoboContFirmware.elf
+Finished building: default.size.stdout
+ 
+
+06:54:21 Build Finished. 0 errors, 0 warnings. (took 644ms)
+

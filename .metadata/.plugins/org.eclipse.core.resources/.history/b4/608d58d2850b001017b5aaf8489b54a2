@@ -1,0 +1,19 @@
+#include <RoboContFirmware/Debug/swo.hpp>
+#include <RoboContFirmware/Debug/swo.h>
+#include <RoboContFirmware/LowLevel/motor.hpp>
+#include <RoboContFirmware/LowLevel/encoder.hpp>
+#include <RoboContFirmware/MidLevel/motor_controller.hpp>
+#include <RoboContFirmware/Debug/test.hpp>
+#include <cstdio>
+
+
+// Test function
+void test()
+{
+
+    while (1)
+    {
+        SWO_PrintString("hello\n",0); // It's not working because of the hardware st-link v2 CLONE!
+        HAL_Delay(1000); // Delay for 1 second
+    }
+}

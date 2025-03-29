@@ -1,0 +1,24 @@
+#include <RoboContFirmware/LowLevel/motor.hpp>
+#include <RoboContFirmware/LowLevel/encoder.hpp>
+#include <RoboContFirmware/MidLevel/motor_controller.hpp>
+#include <RoboContFirmware/Debug/swo.h>
+#include <RoboContFirmware/Debug/test.hpp>
+#include <cstdio>
+
+
+// Test function: Motor with encoder closed-loop control
+void test()
+{
+	SWO_Init(0x01, 48000000);  // Enable port 0, with 48MHz CPU clock
+	SWO_PrintString("=== SWO Active ===\r\n", 0);
+
+	uint32_t counter = 0;
+    while (1)
+    {
+    	char msg[64];
+    	snprintf(msg, sizeof(msg), "Counter: %lu\r\n", counter++);
+    	SWO_PrintString(msg, 0);
+        HAL_Delay(1000);
+
+    }
+}

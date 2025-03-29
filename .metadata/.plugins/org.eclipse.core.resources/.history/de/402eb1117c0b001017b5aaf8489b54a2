@@ -1,0 +1,23 @@
+#include <RoboContFirmware/Debug/swo.hpp>
+#include <RoboContFirmware/Debug/swo.h>
+#include <RoboContFirmware/LowLevel/motor.hpp>
+#include <RoboContFirmware/LowLevel/encoder.hpp>
+#include <RoboContFirmware/MidLevel/motor_controller.hpp>
+#include <RoboContFirmware/Debug/test.hpp>
+#include <cstdio>
+
+
+// Test function
+void test()
+{
+    SWODebug::init(48000000); // Initialize SWO with 48 MHz CPU clock
+    SWODebug::println("SWO Debug Initialized\r\n");
+
+    uint32_t counter = 0;
+    while (1)
+    {
+        SWODebug::printf("Counter: %lu\r\n", counter++);
+        SWO_PrintString("hello\n");
+        HAL_Delay(1000); // Delay for 1 second
+    }
+}

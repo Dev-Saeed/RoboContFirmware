@@ -39,6 +39,7 @@ CPP_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 Core/Src/RoboContFirmware/Application \
+Core/Src/RoboContFirmware/Debug \
 Core/Src/RoboContFirmware/HighLevel \
 Core/Src/RoboContFirmware/LowLevel \
 Core/Src/RoboContFirmware/MidLevel \
