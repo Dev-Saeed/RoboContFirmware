@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <RoboContFirmware/LowLevel/motor.hpp>
 #include "main.h"
 #include "adc.h"
 #include "can.h"
@@ -28,11 +27,11 @@
 #include "usart.h"
 #include "usb.h"
 #include "gpio.h"
-#include <RoboContFirmware/Debug/test.hpp>
 
+#include <RoboContFirmware/Debug/test.hpp>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <cmath>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -116,12 +115,6 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  // Create motor object for TIM5 CH1 and CH2
-  Motor testMotor(&htim5, TIM_CHANNEL_1, &htim5, TIM_CHANNEL_2, 0.1f, 1.5f, 1000.0f);
-
-  float target_speed = 0.0f;
-  float step = 0.05f; // Speed increment step
-  bool increasing = true;
 
   test();
   /* USER CODE END 2 */
@@ -130,36 +123,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      // Set motor target speed
-      testMotor.setTargetSpeed(target_speed);
-
-      // Simulate measured speed as zero for testing (replace later with encoder feedback)
-      float simulated_speed = 0.0f;
-      testMotor.updatePWM(simulated_speed, 0.01f);
-
-      HAL_Delay(100);
-
-      // Increase or decrease speed with safe access to max speed
-      if (increasing)
-      {
-          target_speed += step;
-          if (target_speed >= testMotor.getMaxSpeedMps())
-          {
-              target_speed = testMotor.getMaxSpeedMps();
-              increasing = false;
-          }
-      }
-      else
-      {
-          target_speed -= step;
-          if (target_speed <= 0.0f)
-          {
-              target_speed = 0.0f;
-              increasing = true;
-          }
-      }
-
-
       /* USER CODE END WHILE */
 
       /* USER CODE BEGIN 3 */
